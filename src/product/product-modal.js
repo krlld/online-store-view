@@ -105,38 +105,45 @@ const ProductModal = (props) => {
 							<Input.TextArea />
 						</Form.Item>
 						<Form.List name="images">
-							{(fields, { add, remove }) => (
-								<>
-									{fields.map(({ key, name, ...restField }) => (
-										<Space
-											style={{
-												display: 'flex',
-												marginBottom: 8,
-											}}
-											align="baseline"
-										>
-											<Form.Item
-												{...restField}
-												name={[name, 'url']}
-												rules={[
-													{
-														required: true,
-														message: 'Пожалуйста, укажите ссылку на изображение',
-													},
-												]}
+							{(fields, { add, remove }) => {
+								if (fields.length === 0) {
+									props.selectedProduct.images.map((image) => {
+										add({ url: image.url });
+									});
+								}
+								return (
+									<>
+										{fields.map(({ key, name, ...restField }) => (
+											<Space
+												style={{
+													display: 'flex',
+													marginBottom: 8,
+												}}
+												align="baseline"
 											>
-												<Input placeholder="Ссылка на изображение" />
-											</Form.Item>
-											<MinusCircleOutlined onClick={() => remove(name)} />
-										</Space>
-									))}
-									<Form.Item>
-										<Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-											Добавить изображение
-										</Button>
-									</Form.Item>
-								</>
-							)}
+												<Form.Item
+													{...restField}
+													name={[name, 'url']}
+													rules={[
+														{
+															required: true,
+															message: 'Пожалуйста, укажите ссылку на изображение',
+														},
+													]}
+												>
+													<Input placeholder="Ссылка на изображение" />
+												</Form.Item>
+												<MinusCircleOutlined onClick={() => remove(name)} />
+											</Space>
+										))}
+										<Form.Item>
+											<Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+												Добавить изображение
+											</Button>
+										</Form.Item>
+									</>
+								);
+							}}
 						</Form.List>
 						<Form.Item>
 							<Button type="primary" htmlType="submit">

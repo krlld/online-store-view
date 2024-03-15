@@ -1,13 +1,10 @@
 import { Form, Input, Button, Typography, message } from 'antd';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { config } from '../utils/get-axios-config';
 
 const { Title } = Typography;
 
 const AuthPage = () => {
 	const [form] = Form.useForm();
-	const navigate = useNavigate();
 
 	const handleLogin = async (values) => {
 		try {
@@ -18,7 +15,7 @@ const AuthPage = () => {
 				headers: { Authorization: 'Bearer ' + response.data.token },
 			});
 			localStorage.setItem('userId', userdata.data.id);
-			navigate('/');
+			window.location.href = '/';
 			// Дополнительная обработка успешного ответа сервера
 		} catch (error) {
 			console.error(error);
