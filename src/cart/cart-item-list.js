@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import { List, Pagination, Typography, Button, message } from 'antd';
-import { HeartOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+	PlusOutlined,
+	MinusOutlined,
+	DeleteTwoTone,
+	ShoppingCartOutlined,
+} from '@ant-design/icons';
 import axios from 'axios';
 import { config } from '../utils/get-axios-config';
 import { useNavigate } from 'react-router-dom';
@@ -53,25 +58,33 @@ const CartItemList = () => {
 	const handleChangeQuantity = async (productId, quantity) => {
 		try {
 			// Выполняем GET-запрос к серверу для получения списка категорий
-			await axios.patch(
+			const response = await axios.post(
 				`http://localhost:8080/api/v1/cart-items`,
 				{ productId: productId, userId: localStorage.getItem('userId'), quantity: quantity },
 				config
 			);
 			const name = products.filter((product) => product.productDto.id === productId)[0].productDto
 				.name;
-			setProducts(products.filter((product) => product.productDto.id !== productId));
-			message.warning(`${name} удален из избранного`);
+			setProducts(
+				products.map((product) => {
+					if (product.productDto.id === productId) {
+						product.quantity = product.quantity + quantity;
+					}
+					return product;
+				})
+			);
+			message.success(`В корзине ${response.data.quantity} ${name}`);
 		} catch (error) {
 			console.log(error);
 			if (error.status === 401 || error.status === 403) {
 				navigate('/auth/authenticate');
 				return;
 			}
+			message.warning(error.response.data.message);
 			console.error('Ошибка при загрузке продуктов:', error);
 		}
 		// Логика добавления товара в список избранного
-		console.log(`Product ${productId} deleted from favorites`);
+		console.log(`Product ${productId} change from favorites`);
 	};
 
 	const handleDelete = async (productId) => {
@@ -95,6 +108,30 @@ const CartItemList = () => {
 		}
 		// Логика добавления товара в корзину
 		console.log(`Product ${productId} deleted to cart`);
+	};
+
+	const handleConfirm = async () => {
+		try {
+			// Выполняем GET-запрос к серверу для получения списка категорий
+			await axios.post(
+				`http://localhost:8080/api/v1/orders`,
+				{
+					userId: localStorage.getItem('userId'),
+					deliveryAddress: localStorage.getItem('deliveryAddress'),
+				},
+				config
+			);
+			setProducts([]);
+			message.success(`Заказ по адресу: ${localStorage.getItem('deliveryAddress')} оформлен`);
+		} catch (error) {
+			console.log(error);
+			if (error.status === 401 || error.status === 403) {
+				navigate('/auth/authenticate');
+				return;
+			}
+			message.warning(error.response.data.message);
+			console.error('Ошибка при загрузке продуктов:', error);
+		}
 	};
 
 	return (
@@ -129,19 +166,31 @@ const CartItemList = () => {
 						<div>
 							<Button
 								type="text"
-								icon={<HeartOutlined />}
-								onClick={() => handleChangeQuantity(product.productDto.id)}
-								style={{ backgroundColor: 'red', color: 'white' }}
+								icon={<PlusOutlined />}
+								onClick={() => handleChangeQuantity(product.productDto.id, 1)}
 							/>
 							<Button
 								type="text"
-								icon={<DeleteOutlined />}
+								icon={<MinusOutlined />}
+								onClick={() => handleChangeQuantity(product.productDto.id, -1)}
+							/>
+							<Button
+								type="text"
+								icon={<DeleteTwoTone twoToneColor={'red'} />}
 								onClick={() => handleDelete(product.productDto.id)}
 							/>
 						</div>
 					</div>
 				)}
 			/>
+			<Button
+				type="primary"
+				icon={<ShoppingCartOutlined />}
+				style={{ margin: '0 auto', marginBottom: 16 }}
+				onClick={handleConfirm}
+			>
+				Оформить заказ
+			</Button>
 			<Pagination
 				style={{ marginTop: '20px' }}
 				current={currentPage}
