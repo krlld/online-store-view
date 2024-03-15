@@ -21,6 +21,9 @@ const Navbar = () => {
 					<Menu.Item key="4" icon={<UserOutlined />}>
 						<Link to="/favorites">Избранное</Link>
 					</Menu.Item>
+					<Menu.Item key="5" icon={<UserOutlined />}>
+						<Link to="/cart">Корзина</Link>
+					</Menu.Item>
 				</Menu>
 			</Header>
 		</Layout>

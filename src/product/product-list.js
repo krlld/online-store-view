@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { List, Pagination, Typography, Button, message } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 import axios from 'axios';
 import { config } from '../utils/get-axios-config';
 import { useNavigate } from 'react-router-dom';
@@ -117,10 +117,10 @@ const ProductList = () => {
 							</ul>
 						</div>
 						<div>
-							<Button type="text" icon={<EditOutlined />} onClick={() => openModal(product)} />
+							<Button type="text" icon={<EditTwoTone />} onClick={() => openModal(product)} />
 							<Button
 								type="text"
-								icon={<DeleteOutlined />}
+								icon={<DeleteTwoTone twoToneColor={'red'} />}
 								onClick={() => deleteProduct(product.id)}
 							/>
 						</div>

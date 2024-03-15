@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Card, Row, Col, Typography, Carousel, Pagination, Space, Button, message } from 'antd';
-import { HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { HeartOutlined, HeartTwoTone, ShoppingTwoTone, ShoppingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { config } from '../utils/get-axios-config';
 import { useNavigate } from 'react-router-dom';
@@ -178,14 +178,13 @@ const HomeList = () => {
 							<Space>
 								{product.isInFavorite ? (
 									<Button
-										type="primary"
-										icon={<HeartOutlined />}
-										style={{ backgroundColor: 'red', color: 'white' }}
+										type="text"
+										icon={<HeartTwoTone twoToneColor={'red'} />}
 										onClick={() => handleChangeFavorites(product.productDto.id)}
 									/>
 								) : (
 									<Button
-										type="primary"
+										type="text"
 										icon={<HeartOutlined />}
 										onClick={() => handleChangeFavorites(product.productDto.id)}
 									/>
@@ -193,15 +192,14 @@ const HomeList = () => {
 
 								{product.isInCart ? (
 									<Button
-										type="primary"
-										icon={<ShoppingCartOutlined />}
-										style={{ backgroundColor: 'red', color: 'white' }}
+										type="text"
+										icon={<ShoppingTwoTone twoToneColor={'red'} />}
 										onClick={() => handleDeleteToCart(product.productDto.id)}
 									/>
 								) : (
 									<Button
-										type="primary"
-										icon={<ShoppingCartOutlined />}
+										type="text"
+										icon={<ShoppingOutlined />}
 										onClick={() => handleAddToCart(product.productDto.id)}
 									/>
 								)}

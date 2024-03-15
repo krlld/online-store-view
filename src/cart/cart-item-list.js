@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { List, Pagination, Typography, Button, message } from 'antd';
-import { HeartTwoTone } from '@ant-design/icons';
+import { HeartOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { config } from '../utils/get-axios-config';
 import { useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 
-const FavoriteList = () => {
+const CartItemList = () => {
 	const navigate = useNavigate();
 
 	const [products, setProducts] = useState([]);
@@ -32,7 +32,7 @@ const FavoriteList = () => {
 		try {
 			// Выполняем GET-запрос к серверу для получения списка категорий
 			const response = await axios.get(
-				`http://localhost:8080/api/v1/favorite-items/${localStorage.getItem('userId')}?page=${
+				`http://localhost:8080/api/v1/cart-items/${localStorage.getItem('userId')}?page=${
 					page - 1
 				}&size=${size}&sort=id,desc`,
 				config
@@ -50,12 +50,12 @@ const FavoriteList = () => {
 		}
 	};
 
-	const handleChangeFavorites = async (productId) => {
+	const handleChangeQuantity = async (productId, quantity) => {
 		try {
 			// Выполняем GET-запрос к серверу для получения списка категорий
 			await axios.patch(
-				`http://localhost:8080/api/v1/favorite-items`,
-				{ productId: productId, userId: localStorage.getItem('userId') },
+				`http://localhost:8080/api/v1/cart-items`,
+				{ productId: productId, userId: localStorage.getItem('userId'), quantity: quantity },
 				config
 			);
 			const name = products.filter((product) => product.productDto.id === productId)[0].productDto
@@ -74,10 +74,33 @@ const FavoriteList = () => {
 		console.log(`Product ${productId} deleted from favorites`);
 	};
 
+	const handleDelete = async (productId) => {
+		try {
+			// Выполняем GET-запрос к серверу для получения списка категорий
+			await axios.delete(
+				`http://localhost:8080/api/v1/cart-items/${localStorage.getItem('userId')}/${productId}`,
+				config
+			);
+			const name = products.filter((product) => product.productDto.id === productId)[0].productDto
+				.name;
+			setProducts(products.filter((product) => product.productDto.id !== productId));
+			message.warning(`${name} удален из корзины`);
+		} catch (error) {
+			console.log(error);
+			if (error.status === 401 || error.status === 403) {
+				navigate('/auth/authenticate');
+				return;
+			}
+			console.error('Ошибка при загрузке продуктов:', error);
+		}
+		// Логика добавления товара в корзину
+		console.log(`Product ${productId} deleted to cart`);
+	};
+
 	return (
 		<>
 			<Title level={4} style={{ textAlign: 'center' }}>
-				Избранные товары
+				Корзина
 			</Title>
 			<List
 				dataSource={products}
@@ -96,14 +119,24 @@ const FavoriteList = () => {
 							<Text>{product.productDto.price}</Text>
 						</div>
 						<div>
+							<Text strong>Количество в корзине: </Text>
+							<Text>{product.quantity}</Text>
+						</div>
+						<div>
 							<Text strong>Описание: </Text>
 							<Text>{product.productDto.description}</Text>
 						</div>
 						<div>
 							<Button
 								type="text"
-								icon={<HeartTwoTone twoToneColor={'red'} />}
-								onClick={() => handleChangeFavorites(product.productDto.id)}
+								icon={<HeartOutlined />}
+								onClick={() => handleChangeQuantity(product.productDto.id)}
+								style={{ backgroundColor: 'red', color: 'white' }}
+							/>
+							<Button
+								type="text"
+								icon={<DeleteOutlined />}
+								onClick={() => handleDelete(product.productDto.id)}
 							/>
 						</div>
 					</div>
@@ -120,4 +153,4 @@ const FavoriteList = () => {
 	);
 };
 
-export default FavoriteList;
+export default CartItemList;
