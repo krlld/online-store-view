@@ -6,6 +6,7 @@ import AuthPage from './routes/auth-page';
 import CategoryPage from './routes/category-page';
 import ProductPage from './routes/product-page';
 import HomePage from './routes/home-page';
+import FavoritePage from './routes/favorite-page';
 
 message.config({
 	duration: 2,
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
 	{
 		path: '/products',
 		element: <ProductPage />,
+	},
+	{
+		path: '/favorites',
+		element: <FavoritePage />,
 	},
 ]);
 
