@@ -8,6 +8,7 @@ import ProductPage from './routes/product-page';
 import HomePage from './routes/home-page';
 import FavoritePage from './routes/favorite-page';
 import CartPage from './routes/cart-page';
+import ProfilePage from './routes/profile-page';
 
 message.config({
 	duration: 2,
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
 	{
 		path: '/cart',
 		element: <CartPage />,
+	},
+	{
+		path: '/profile',
+		element: <ProfilePage />,
 	},
 ]);
 
