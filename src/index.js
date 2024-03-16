@@ -10,6 +10,7 @@ import FavoritePage from './routes/favorite-page';
 import CartPage from './routes/cart-page';
 import ProfilePage from './routes/profile-page';
 import RegisterPage from './routes/register-page';
+import OrderPage from './routes/order-page';
 
 message.config({
 	duration: 2,
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
 	{
 		path: '/cart',
 		element: <CartPage />,
+	},
+	{
+		path: '/orders',
+		element: <OrderPage />,
 	},
 	{
 		path: '/profile',
