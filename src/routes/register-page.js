@@ -3,12 +3,12 @@ import axios from 'axios';
 
 const { Title } = Typography;
 
-const AuthPage = () => {
+const RegisterPage = () => {
 	const [form] = Form.useForm();
 
 	const handleLogin = async (values) => {
 		try {
-			const response = await axios.post('http://localhost:8080/api/v1/auth/authenticate', values);
+			const response = await axios.post('http://localhost:8080/api/v1/auth/register', values);
 			console.log(response.data);
 			localStorage.setItem('token', response.data.token);
 			const userdata = await axios.get('http://localhost:8080/api/v1/userdata', {
@@ -32,9 +32,16 @@ const AuthPage = () => {
 		>
 			<div style={{ width: '400px' }}>
 				<Title level={2} style={{ textAlign: 'center', marginBottom: '2rem' }}>
-					Авторизация
+					Регистрация
 				</Title>
 				<Form form={form} name="login" onFinish={handleLogin}>
+					<Form.Item
+						label="Имя пользователя"
+						name="name"
+						rules={[{ required: true, message: 'Пожалуйста, введите имя пользователя' }]}
+					>
+						<Input />
+					</Form.Item>
 					<Form.Item
 						label="Email"
 						name="email"
@@ -51,16 +58,13 @@ const AuthPage = () => {
 					</Form.Item>
 					<Form.Item>
 						<Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-							Войти
+							Зарегистрироваться
 						</Button>
 					</Form.Item>
 				</Form>
-				<Title level={5}>
-					<a href="register">Зарегистрироваться</a>
-				</Title>
 			</div>
 		</div>
 	);
 };
 
-export default AuthPage;
+export default RegisterPage;

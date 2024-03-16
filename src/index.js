@@ -9,6 +9,7 @@ import HomePage from './routes/home-page';
 import FavoritePage from './routes/favorite-page';
 import CartPage from './routes/cart-page';
 import ProfilePage from './routes/profile-page';
+import RegisterPage from './routes/register-page';
 
 message.config({
 	duration: 2,
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
 	{
 		path: '/auth/authenticate',
 		element: <AuthPage />,
+	},
+	{
+		path: '/auth/register',
+		element: <RegisterPage />,
 	},
 	{
 		path: '/categories',

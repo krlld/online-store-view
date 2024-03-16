@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Typography, Input } from 'antd';
+import { Typography, Input, Button } from 'antd';
 import axios from 'axios';
 import { config } from '../utils/get-axios-config';
 import { useNavigate } from 'react-router-dom';
@@ -36,6 +36,12 @@ const ProfileData = () => {
 		console.log(value.target.value);
 	};
 
+	const logout = () => {
+		localStorage.removeItem('userId');
+		localStorage.removeItem('token');
+		window.location.href = '/';
+	};
+
 	return (
 		<>
 			<Title level={4} style={{ textAlign: 'center' }}>
@@ -56,8 +62,14 @@ const ProfileData = () => {
 						size="small"
 						addonBefore="Адрес доставки"
 						defaultValue={localStorage.getItem('deliveryAddress')}
+						style={{ marginBottom: '15px' }}
 						onChangeCapture={changeDeliveryAddress}
 					/>
+				</div>
+				<div>
+					<Button type="primary" onClick={logout}>
+						Выйти
+					</Button>
 				</div>
 			</div>
 		</>
