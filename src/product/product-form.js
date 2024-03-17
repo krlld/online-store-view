@@ -9,6 +9,8 @@ const { Title } = Typography;
 const { Option } = Select;
 
 const ProductForm = (props) => {
+	const [form] = Form.useForm();
+
 	const navigate = useNavigate();
 
 	const [categories, setCategories] = useState([]);
@@ -48,6 +50,7 @@ const ProductForm = (props) => {
 			props.onAdd(response.data);
 			message.success('Товар успешно добавлен');
 			console.log(response.data);
+			form.resetFields();
 			// Дополнительная обработка успешного ответа сервера
 		} catch (error) {
 			console.log(error);
@@ -66,7 +69,7 @@ const ProductForm = (props) => {
 			<Title level={3} style={{ textAlign: 'center' }}>
 				Создать товар
 			</Title>
-			<Form onFinish={onFinish}>
+			<Form form={form} onFinish={onFinish}>
 				<Form.Item
 					label="Название товара"
 					name="name"

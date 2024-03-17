@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 const { Title } = Typography;
 
 const CategoryForm = (props) => {
+	const [form] = Form.useForm();
+
 	const navigate = useNavigate();
 
 	const onFinish = async (values) => {
@@ -19,6 +21,7 @@ const CategoryForm = (props) => {
 			message.success('Категория успешно добавлена');
 			console.log(response.data);
 			props.onAdd(response.data);
+			form.resetFields();
 			// Дополнительная обработка успешного ответа сервера
 		} catch (error) {
 			if (error.response.status === 401 || error.response.status === 403) {
@@ -36,7 +39,7 @@ const CategoryForm = (props) => {
 			<Title level={3} style={{ textAlign: 'center' }}>
 				Создать категорию товаров
 			</Title>
-			<Form name="categoryForm" onFinish={onFinish}>
+			<Form form={form} name="categoryForm" onFinish={onFinish}>
 				<Form.Item
 					label="Название категории"
 					name="name"

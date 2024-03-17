@@ -4,6 +4,8 @@ import { config } from '../utils/get-axios-config';
 import { useNavigate } from 'react-router-dom';
 
 const ReviewForm = (props) => {
+	const [form] = Form.useForm();
+
 	const navigate = useNavigate();
 
 	const onFinish = async (values) => {
@@ -19,6 +21,7 @@ const ReviewForm = (props) => {
 			message.success('Отзыв успешно добавлен');
 			console.log(response.data);
 			props.onAdd(response.data);
+			form.resetFields();
 			// Дополнительная обработка успешного ответа сервера
 		} catch (error) {
 			if (error.response.status === 401 || error.response.status === 403) {
@@ -33,7 +36,7 @@ const ReviewForm = (props) => {
 
 	return (
 		<>
-			<Form onFinish={onFinish} style={{ marginTop: '15px' }}>
+			<Form form={form} onFinish={onFinish} style={{ marginTop: '15px' }}>
 				<Form.Item
 					label="Оценка"
 					name="rating"
