@@ -1,9 +1,27 @@
 import { useEffect, useState } from 'react';
-import { Card, Row, Col, Typography, Carousel, Pagination, Space, Button, message } from 'antd';
-import { HeartOutlined, HeartTwoTone, ShoppingTwoTone, ShoppingOutlined } from '@ant-design/icons';
+import {
+	Card,
+	Row,
+	Col,
+	Typography,
+	Carousel,
+	Pagination,
+	Space,
+	Button,
+	message,
+	Rate,
+} from 'antd';
+import {
+	HeartOutlined,
+	HeartTwoTone,
+	ShoppingTwoTone,
+	ShoppingOutlined,
+	CommentOutlined,
+} from '@ant-design/icons';
 import axios from 'axios';
 import { config } from '../utils/get-axios-config';
 import { useNavigate } from 'react-router-dom';
+import ReviewModal from './review-modal';
 
 const { Text } = Typography;
 
@@ -139,6 +157,19 @@ const HomeList = () => {
 		console.log(`Product ${productId} deleted to cart`);
 	};
 
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const [selectedProduct, setSelectedProduct] = useState(null);
+
+	const showModal = (product) => {
+		setSelectedProduct(product);
+		setIsModalOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsModalOpen(false);
+	};
+
 	return (
 		<>
 			<Row gutter={[16, 16]}>
@@ -161,6 +192,7 @@ const HomeList = () => {
 									</div>
 								))}
 							</Carousel>
+							<Rate disabled allowHalf defaultValue={product.productDto.averageRating} />
 							<div style={{ marginBottom: '10px' }}>
 								<div>
 									<Text strong>Категория: </Text>
@@ -203,11 +235,19 @@ const HomeList = () => {
 										onClick={() => handleAddToCart(product.productDto.id)}
 									/>
 								)}
+								<Button type="text" onClick={() => showModal(product)} icon={<CommentOutlined />} />
 							</Space>
 						</Card>
 					</Col>
 				))}
 			</Row>
+			<ReviewModal
+				modalVisible={isModalOpen}
+				closeModal={closeModal}
+				selectedProduct={selectedProduct}
+				products={products}
+				setProducts={setProducts}
+			/>
 			<Pagination
 				style={{ marginTop: '20px' }}
 				current={currentPage}

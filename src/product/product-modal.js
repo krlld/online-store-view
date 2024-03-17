@@ -65,7 +65,7 @@ const ProductModal = (props) => {
 				footer={null}
 			>
 				{props.selectedProduct && (
-					<Form onFinish={handleUpdateProduct}>
+					<Form key={props.selectedProduct.id} onFinish={handleUpdateProduct}>
 						<Form.Item
 							label="Название товара"
 							name="name"

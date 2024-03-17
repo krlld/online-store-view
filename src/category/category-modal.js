@@ -32,7 +32,7 @@ const CategoryModal = (props) => {
 				footer={null}
 			>
 				{props.selectedCategory && (
-					<Form onFinish={handleUpdateCategory}>
+					<Form key={props.selectedCategory.id} onFinish={handleUpdateCategory}>
 						<Form.Item
 							label="Название категории"
 							name="name"
