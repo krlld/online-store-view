@@ -17,11 +17,13 @@ import {
 	ShoppingTwoTone,
 	ShoppingOutlined,
 	CommentOutlined,
+	LineChartOutlined,
 } from '@ant-design/icons';
 import axios from 'axios';
 import { config } from '../utils/get-axios-config';
 import { useNavigate } from 'react-router-dom';
 import ReviewModal from './review-modal';
+import PriceChangeModal from './price-change-modal';
 
 const { Text } = Typography;
 
@@ -170,6 +172,17 @@ const HomeList = () => {
 		setIsModalOpen(false);
 	};
 
+	const [showPriceChange, setShowPriceChange] = useState(false);
+
+	const onShowPriceChange = (product) => {
+		setSelectedProduct(product);
+		setShowPriceChange(true);
+	};
+
+	const closeShowPriceChange = () => {
+		setShowPriceChange(false);
+	};
+
 	return (
 		<>
 			<Row gutter={[16, 16]}>
@@ -236,6 +249,13 @@ const HomeList = () => {
 									/>
 								)}
 								<Button type="text" onClick={() => showModal(product)} icon={<CommentOutlined />} />
+								<Button
+									type="text"
+									onClick={() => {
+										onShowPriceChange(product);
+									}}
+									icon={<LineChartOutlined />}
+								/>
 							</Space>
 						</Card>
 					</Col>
@@ -247,6 +267,11 @@ const HomeList = () => {
 				selectedProduct={selectedProduct}
 				products={products}
 				setProducts={setProducts}
+			/>
+			<PriceChangeModal
+				modalVisible={showPriceChange}
+				closeModal={closeShowPriceChange}
+				selectedProduct={selectedProduct}
 			/>
 			<Pagination
 				style={{ marginTop: '20px' }}
