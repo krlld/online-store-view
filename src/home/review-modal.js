@@ -39,6 +39,7 @@ const ReviewModal = (props) => {
 	const onAdd = (review) => {
 		setReviews([review, ...reviews]); // Обновляем состояние списка категорий, добавляя новую категорию
 		incrementReviews();
+		props.updateRating(productId, review.rating);
 	};
 
 	const fetchReviews = async (page, size) => {

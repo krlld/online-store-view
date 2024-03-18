@@ -183,6 +183,21 @@ const HomeList = () => {
 		setShowPriceChange(false);
 	};
 
+	const updateRating = (productId, rating) => {
+		setProducts(
+			products.map((product) => {
+				if (product.productDto.id === productId) {
+					product.productDto.averageRating =
+						(product.productDto.totalReviews * product.productDto.averageRating + rating) /
+						(product.productDto.totalReviews + 1);
+					product.productDto.totalReviews = product.productDto.totalReviews + 1;
+					console.log(product.productDto.averageRating);
+				}
+				return product;
+			})
+		);
+	};
+
 	return (
 		<>
 			<Row gutter={[16, 16]}>
@@ -205,7 +220,12 @@ const HomeList = () => {
 									</div>
 								))}
 							</Carousel>
-							<Rate disabled allowHalf defaultValue={product.productDto.averageRating} />
+							<Rate
+								key={product.productDto.averageRating}
+								disabled
+								allowHalf
+								defaultValue={product.productDto.averageRating}
+							/>
 							<div style={{ marginBottom: '10px' }}>
 								<div>
 									<Text strong>Категория: </Text>
@@ -265,8 +285,7 @@ const HomeList = () => {
 				modalVisible={isModalOpen}
 				closeModal={closeModal}
 				selectedProduct={selectedProduct}
-				products={products}
-				setProducts={setProducts}
+				updateRating={updateRating}
 			/>
 			<PriceChangeModal
 				modalVisible={showPriceChange}
