@@ -10,6 +10,10 @@ import {
 	Button,
 	message,
 	Rate,
+	Drawer,
+	FloatButton,
+	Form,
+	Input,
 } from 'antd';
 import {
 	HeartOutlined,
@@ -18,6 +22,7 @@ import {
 	ShoppingOutlined,
 	CommentOutlined,
 	LineChartOutlined,
+	SearchOutlined,
 } from '@ant-design/icons';
 import axios from 'axios';
 import { config } from '../utils/get-axios-config';
@@ -48,13 +53,14 @@ const HomeList = () => {
 		fetchProducts();
 	}, []);
 
-	const fetchProducts = async (page, size) => {
+	const fetchProducts = async (page, size, query) => {
 		try {
+			query = query ? query : '';
 			// Выполняем GET-запрос к серверу для получения списка категорий
 			const response = await axios.get(
 				`http://localhost:8080/api/v1/user-products/${localStorage.getItem('userId')}?page=${
 					page - 1
-				}&size=${size}&sort=id,desc`,
+				}&size=${size}&sort=id,desc&query=${query}`,
 				config
 			);
 			setProducts(response.data.content); // Обновляем состояние списка категорий
@@ -198,6 +204,16 @@ const HomeList = () => {
 		);
 	};
 
+	const [open, setOpen] = useState(false);
+
+	const showDrawer = () => {
+		setOpen(true);
+	};
+
+	const onClose = () => {
+		setOpen(false);
+	};
+
 	return (
 		<>
 			<Row gutter={[16, 16]}>
@@ -292,6 +308,23 @@ const HomeList = () => {
 				closeModal={closeShowPriceChange}
 				selectedProduct={selectedProduct}
 			/>
+			<Drawer title="Поиск по товарам" onClose={onClose} open={open}>
+				<Form
+					onFinish={(values) => {
+						fetchProducts(null, null, values.query);
+					}}
+				>
+					<Form.Item name="query" rules={[{ message: 'Пожалуйста, введите запрос для поиска' }]}>
+						<Input />
+					</Form.Item>
+					<Form.Item>
+						<Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+							Искать
+						</Button>
+					</Form.Item>
+				</Form>
+			</Drawer>
+			<FloatButton type="primary" icon={<SearchOutlined />} onClick={showDrawer} />
 			<Pagination
 				style={{ marginTop: '20px' }}
 				current={currentPage}
