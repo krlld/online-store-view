@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import { message } from 'antd';
 import AuthPage from './routes/auth-page';
 import CategoryPage from './routes/category-page';
@@ -11,6 +11,7 @@ import CartPage from './routes/cart-page';
 import ProfilePage from './routes/profile-page';
 import RegisterPage from './routes/register-page';
 import OrderPage from './routes/order-page';
+import { checkUserRole } from './utils/check-user-role';
 
 message.config({
 	duration: 2,
@@ -32,27 +33,43 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/categories',
-		element: <CategoryPage />,
+		element: checkUserRole(['ROLE_ADMIN']) ? <CategoryPage /> : <Navigate to="auth/authenticate" />,
 	},
 	{
 		path: '/products',
-		element: <ProductPage />,
+		element: checkUserRole(['ROLE_ADMIN']) ? <ProductPage /> : <Navigate to="auth/authenticate" />,
 	},
 	{
 		path: '/favorites',
-		element: <FavoritePage />,
+		element: checkUserRole(['ROLE_ADMIN', 'ROLE_USER']) ? (
+			<FavoritePage />
+		) : (
+			<Navigate to="auth/authenticate" />
+		),
 	},
 	{
 		path: '/cart',
-		element: <CartPage />,
+		element: checkUserRole(['ROLE_ADMIN', 'ROLE_USER']) ? (
+			<CartPage />
+		) : (
+			<Navigate to="auth/authenticate" />
+		),
 	},
 	{
 		path: '/orders',
-		element: <OrderPage />,
+		element: checkUserRole(['ROLE_ADMIN', 'ROLE_USER']) ? (
+			<OrderPage />
+		) : (
+			<Navigate to="auth/authenticate" />
+		),
 	},
 	{
 		path: '/profile',
-		element: <ProfilePage />,
+		element: checkUserRole(['ROLE_ADMIN', 'ROLE_USER']) ? (
+			<ProfilePage />
+		) : (
+			<Navigate to="auth/authenticate" />
+		),
 	},
 ]);
 

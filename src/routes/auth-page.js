@@ -15,6 +15,7 @@ const AuthPage = () => {
 				headers: { Authorization: 'Bearer ' + response.data.token },
 			});
 			localStorage.setItem('userId', userdata.data.id);
+			localStorage.setItem('roles', userdata.data.roles);
 			window.location.href = '/';
 			// Дополнительная обработка успешного ответа сервера
 		} catch (error) {
