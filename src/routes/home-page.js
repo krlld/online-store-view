@@ -1,3 +1,4 @@
+import AppFooter from '../footer';
 import HomeList from '../home/home-list';
 import Navbar from '../navbar';
 
@@ -8,6 +9,7 @@ const HomePage = () => {
 			<div style={{ margin: '20px' }}>
 				<HomeList />
 			</div>
+			<AppFooter />
 		</>
 	);
 };
