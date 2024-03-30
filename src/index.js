@@ -12,6 +12,7 @@ import ProfilePage from './routes/profile-page';
 import RegisterPage from './routes/register-page';
 import OrderPage from './routes/order-page';
 import { checkUserRole } from './utils/check-user-role';
+import StatisticPage from './routes/statistic-page';
 
 message.config({
 	duration: 2,
@@ -67,6 +68,14 @@ const router = createBrowserRouter([
 		path: '/profile',
 		element: checkUserRole(['ROLE_ADMIN', 'ROLE_USER']) ? (
 			<ProfilePage />
+		) : (
+			<Navigate to="auth/authenticate" />
+		),
+	},
+	{
+		path: '/statistic',
+		element: checkUserRole(['ROLE_ADMIN']) ? (
+			<StatisticPage />
 		) : (
 			<Navigate to="auth/authenticate" />
 		),
