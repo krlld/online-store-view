@@ -3,6 +3,7 @@ import { Typography, Input, Button } from 'antd';
 import axios from 'axios';
 import { config } from '../utils/get-axios-config';
 import { useNavigate } from 'react-router-dom';
+import MapAddress from './map';
 
 const { Title, Text } = Typography;
 
@@ -31,7 +32,16 @@ const ProfileData = () => {
 		}
 	};
 
+	const [deliveryAddress, setDeliveryAddress] = useState(localStorage.getItem('deliveryAddress'));
+
+	const handleInputChange = (address) => {
+		setDeliveryAddress(address);
+		localStorage.setItem('deliveryAddress', address);
+		console.log(address);
+	};
+
 	const changeDeliveryAddress = (value) => {
+		setDeliveryAddress(value.target.value);
 		localStorage.setItem('deliveryAddress', value.target.value);
 		console.log(value.target.value);
 	};
@@ -61,13 +71,14 @@ const ProfileData = () => {
 						type="primary"
 						size="small"
 						addonBefore="Адрес доставки"
-						defaultValue={localStorage.getItem('deliveryAddress')}
+						value={deliveryAddress}
 						style={{ marginBottom: '15px' }}
 						onChangeCapture={changeDeliveryAddress}
 					/>
 				</div>
+				<MapAddress changeDeliveryAddress={handleInputChange} />
 				<div>
-					<Button type="primary" onClick={logout}>
+					<Button style={{ marginTop: 15 }} type="primary" onClick={logout}>
 						Выйти
 					</Button>
 				</div>
