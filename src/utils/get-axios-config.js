@@ -1,1 +1,3 @@
-export const config = { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } };
+export const config = localStorage.getItem('token')
+	? { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } }
+	: { headers: { Authorization: '' } };

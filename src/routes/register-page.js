@@ -18,8 +18,8 @@ const RegisterPage = () => {
 			window.location.href = '/';
 			// Дополнительная обработка успешного ответа сервера
 		} catch (error) {
-			console.error(error);
-			message.warning('Проверьте свои данные');
+			console.error(error.response.data.message);
+			message.warning(error.response.data.message);
 			// Обработка ошибки
 		}
 		// Очистка полей ввода после отправки формы

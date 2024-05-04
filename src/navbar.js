@@ -8,6 +8,7 @@ import {
 	ShoppingCartOutlined,
 	TruckOutlined,
 	BarChartOutlined,
+	MessageOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { checkUserRole } from './utils/check-user-role';
@@ -32,6 +33,9 @@ const Navbar = () => {
 							</Menu.Item>
 							<Menu.Item key="8" icon={<BarChartOutlined />}>
 								<Link to="/statistic">Статистика</Link>
+							</Menu.Item>
+							<Menu.Item key="9" icon={<MessageOutlined />}>
+								<Link to="/emails">Сообщения</Link>
 							</Menu.Item>
 						</>
 					)}

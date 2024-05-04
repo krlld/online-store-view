@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Typography, Input, Button } from 'antd';
+import { Typography, Button } from 'antd';
 import axios from 'axios';
 import { config } from '../utils/get-axios-config';
 import { useNavigate } from 'react-router-dom';
 import MapAddress from './map';
+import TextArea from 'antd/es/input/TextArea';
 
 const { Title, Text } = Typography;
 
@@ -67,7 +68,8 @@ const ProfileData = () => {
 					<Text>{userdata.email}</Text>
 				</div>
 				<div>
-					<Input
+					<Text strong>Адрес доставки: </Text>
+					<TextArea
 						type="primary"
 						size="small"
 						addonBefore="Адрес доставки"

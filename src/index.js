@@ -13,6 +13,7 @@ import RegisterPage from './routes/register-page';
 import OrderPage from './routes/order-page';
 import { checkUserRole } from './utils/check-user-role';
 import StatisticPage from './routes/statistic-page';
+import EmailPage from './routes/email-page';
 
 message.config({
 	duration: 2,
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
 		) : (
 			<Navigate to="auth/authenticate" />
 		),
+	},
+	{
+		path: '/emails',
+		element: checkUserRole(['ROLE_ADMIN']) ? <EmailPage /> : <Navigate to="auth/authenticate" />,
 	},
 ]);
 
